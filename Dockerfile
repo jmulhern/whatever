@@ -32,6 +32,6 @@ COPY --from=js-builder /x/dist dist
 COPY --from=bin-builder /x/bin/app app
 COPY --from=bin-builder /x/what.tag what.tag
 COPY public public
-COPY what.encrypted what.encrypted
+COPY what.yaml what.yaml
 
 CMD ["/x/app", "serve"]

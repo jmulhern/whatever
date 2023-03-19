@@ -29,8 +29,8 @@ func NewHandler(thing what.Thing) Handler {
 		smtpServer = mail.NewSMTPClient()
 		smtpServer.Host = thing.SMTP.Host
 		smtpServer.Port = thing.SMTP.Port
-		smtpServer.Username = thing.SMTP.Username
-		smtpServer.Password = thing.SMTP.Password
+		smtpServer.Username = Decrypt(thing.SMTP.Username)
+		smtpServer.Password = Decrypt(thing.SMTP.Password)
 		smtpServer.Encryption = mail.EncryptionSTARTTLS
 		smtpServer.KeepAlive = false
 		smtpServer.ConnectTimeout = 10 * time.Second

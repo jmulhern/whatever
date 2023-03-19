@@ -36,13 +36,15 @@ func main() {
 			flags[key] = value
 		}
 	}
+
 	fmt.Println(action, flags)
 	switch action {
 	case "encrypt":
-		whatever.EncryptWhat()
+		fmt.Println(whatever.Encrypt(os.Args[2]))
+	case "decrypt":
+		fmt.Println(whatever.Decrypt(os.Args[2]))
 	case "serve":
 		w := whatever.GetWhat()
-
 		if local := flags["local"]; local != "" {
 			for _, l := range strings.Split(local, ",") {
 				switch l {
@@ -52,6 +54,12 @@ func main() {
 						fqdnParts[len(fqdnParts)-1] = "local:3000"
 						thing.FQDN = strings.Join(fqdnParts, ".")
 						w.Things[i] = thing
+					}
+				case "to":
+					for i := range w.Things {
+						if len(w.Things[i].Email.To) > 0 {
+							w.Things[i].Email.To = []string{"jmm@hey.com"}
+						}
 					}
 				case "smtp":
 					for i := range w.Things {

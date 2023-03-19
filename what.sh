@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-
-
 mode=${1:-"quick"}
 
 NAME=$(basename  "${PWD}")
@@ -12,8 +10,6 @@ NOW=$(date +%Y%m%d.%H%M%S)
 echo "${AWS_ACCOUNT_ID} ${AWS_REGION} ${mode}"
 
 if [ "${mode}" == 'quick' ]; then
-    make build
-    ./bin/whatever encrypt
     docker build -t "${NAME}:local" .
     docker tag "${NAME}:local" "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest"
     docker tag "${NAME}:local" "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:${NOW}"
@@ -22,8 +18,6 @@ if [ "${mode}" == 'quick' ]; then
     echo -n "${NOW}" > what.tag
     (cd ../ever && cdk deploy 'whatever-*')
 elif [ "${mode}" == 'full' ]; then
-    make build
-    ./bin/whatever encrypt
     aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
     docker build -t "${NAME}:local" .
     docker tag "${NAME}:local" "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest"
