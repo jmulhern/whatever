@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial- scale=1, shrink-to-fit=no" name="viewport">
+    <title>{{ .Thing.Site.Title }}</title>
+    <link rel="icon" type="image/x-icon" href="{{ .Thing.Site.Favicon }}">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="/dist/bundle.css">
+</head>
+<body class='{{ .Thing.Site.BodyClasses }}'>
+<div id="root"></div>
+<noscript>
+    This page requires JavaScript!
+</noscript>
+<script>
+  window.thing = '{{ .Thing.Name }}'
+</script>
+<script src="/dist/bundle.js"></script>
+
+</body>
+</html>

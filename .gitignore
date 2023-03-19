@@ -1,0 +1,9 @@
+bin
+dist
+node_modules
+tmp
+.idea
+what.tag
+what.yaml
+what.encrypted
+what.key
