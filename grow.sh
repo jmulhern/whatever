@@ -15,7 +15,7 @@ if [ "${mode}" == 'quick' ]; then
     docker tag "${NAME}:local" "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:${NOW}"
     docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest"
     docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:${NOW}"
-    echo -n "${NOW}" > what.tag
+    echo -n "${NOW}" > sprout.txt
     (cd ../garden && cdk deploy 'whatever-*')
 elif [ "${mode}" == 'full' ]; then
     aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
@@ -24,7 +24,7 @@ elif [ "${mode}" == 'full' ]; then
     docker tag "${NAME}:local" "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:${NOW}"
     docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest"
     docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:${NOW}"
-    echo -n "${NOW}" > what.tag
+    echo -n "${NOW}" > sprout.txt
     (cd ../garden && cdk diff 'whatever-*')
     (cd ../garden && cdk deploy 'whatever-*')
 elif [ "${mode}" == 'diff' ]; then

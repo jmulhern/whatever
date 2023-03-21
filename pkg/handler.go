@@ -13,17 +13,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/go-chi/chi/v5"
-	seed "github.com/jmulhern/seed/pkg"
+	heritage "github.com/jmulhern/heritage/pkg"
 	mail "github.com/xhit/go-simple-mail/v2"
 )
 
 type Handler struct {
-	seed       seed.Seed
+	seed       heritage.Seed
 	awsConfig  aws.Config
 	smtpServer *mail.SMTPServer
 }
 
-func NewHandler(seed seed.Seed) Handler {
+func NewHandler(seed heritage.Seed) Handler {
 	var smtpServer *mail.SMTPServer
 	if seed.SMTP.Host != "" {
 		smtpServer = mail.NewSMTPClient()

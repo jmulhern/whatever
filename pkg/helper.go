@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"os"
 
-	seed "github.com/jmulhern/seed/pkg"
+	heritage "github.com/jmulhern/heritage/pkg"
 	"gopkg.in/yaml.v3"
 )
 
-func OpenPacket() (packet seed.Packet) {
+func OpenPacket() (packet heritage.Packet) {
 	if raw, err := os.ReadFile("garden.yaml"); err == nil {
 		if err := yaml.Unmarshal(raw, &packet); err == nil {
 			fmt.Println("using garden.yaml")

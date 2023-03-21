@@ -4,7 +4,7 @@ node_modules
 tmp
 .idea
 garden.yaml
-what.tag
+sprout.txt
 what.yaml
 what.encrypted
 what.key

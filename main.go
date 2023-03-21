@@ -11,7 +11,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/hostrouter"
-	seed "github.com/jmulhern/seed/pkg"
+	heritage "github.com/jmulhern/heritage/pkg"
 
 	"github.com/jmulhern/whatever/pkg"
 )
@@ -63,11 +63,11 @@ func main() {
 					}
 				case "smtp":
 					for i := range packet.Seeds {
-						packet.Seeds[i].SMTP = seed.SMTP{}
+						packet.Seeds[i].SMTP = heritage.SMTP{}
 					}
 				case "bucket":
 					for i := range packet.Seeds {
-						packet.Seeds[i].Bucket = seed.Bucket{}
+						packet.Seeds[i].Bucket = heritage.Bucket{}
 					}
 				}
 			}
