@@ -13,24 +13,24 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/go-chi/chi/v5"
-	what "github.com/jmulhern/what/pkg"
+	seed "github.com/jmulhern/seed/pkg"
 	mail "github.com/xhit/go-simple-mail/v2"
 )
 
 type Handler struct {
-	thing      what.Thing
+	seed       seed.Seed
 	awsConfig  aws.Config
 	smtpServer *mail.SMTPServer
 }
 
-func NewHandler(thing what.Thing) Handler {
+func NewHandler(seed seed.Seed) Handler {
 	var smtpServer *mail.SMTPServer
-	if thing.SMTP.Host != "" {
+	if seed.SMTP.Host != "" {
 		smtpServer = mail.NewSMTPClient()
-		smtpServer.Host = thing.SMTP.Host
-		smtpServer.Port = thing.SMTP.Port
-		smtpServer.Username = Decrypt(thing.SMTP.Username)
-		smtpServer.Password = Decrypt(thing.SMTP.Password)
+		smtpServer.Host = seed.SMTP.Host
+		smtpServer.Port = seed.SMTP.Port
+		smtpServer.Username = Decrypt(seed.SMTP.Username)
+		smtpServer.Password = Decrypt(seed.SMTP.Password)
 		smtpServer.Encryption = mail.EncryptionSTARTTLS
 		smtpServer.KeepAlive = false
 		smtpServer.ConnectTimeout = 10 * time.Second
@@ -39,7 +39,7 @@ func NewHandler(thing what.Thing) Handler {
 	}
 	awsConfig, _ := config.LoadDefaultConfig(context.TODO())
 	return Handler{
-		thing:      thing,
+		seed:       seed,
 		smtpServer: smtpServer,
 		awsConfig:  awsConfig,
 	}
@@ -48,7 +48,8 @@ func NewHandler(thing what.Thing) Handler {
 func (h Handler) Index(w http.ResponseWriter, _ *http.Request) {
 	tmpl := template.Must(template.ParseFiles("public/index.html"))
 	err := tmpl.Execute(w, map[string]any{
-		"Thing": h.thing,
+		"name": h.seed.Name,
+		"site": h.seed.Site,
 	})
 	if err != nil {
 		log.Fatal(err)

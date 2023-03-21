@@ -7,19 +7,19 @@ export default function App() {
   const params = Object.fromEntries(urlSearchParams.entries());
   const parts = window.location.pathname.split("/")
 
-  if (window.thing === 'whatever') {
+  if (window.seed === 'whatever') {
     return (
       <Whatever params={params} parts={parts} />
     )
-  } else if (window.thing === 'greasy-shadows') {
+  } else if (window.seed === 'greasy-shadows') {
     return (
       <GreasyShadows params={params} parts={parts} />
     )
-  } else if (window.thing  === 'the-bachelorette') {
+  } else if (window.seed  === 'the-bachelorette') {
     return (
       <TheBachelorette params={params} parts={parts} />
     )
-  } else if (window.thing === 'desert-cat-cookies') {
+  } else if (window.seed === 'desert-cat-cookies') {
     return (
       <DesertCatCookies params={params} parts={parts} />
     )

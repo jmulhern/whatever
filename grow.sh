@@ -16,7 +16,7 @@ if [ "${mode}" == 'quick' ]; then
     docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest"
     docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:${NOW}"
     echo -n "${NOW}" > what.tag
-    (cd ../ever && cdk deploy 'whatever-*')
+    (cd ../garden && cdk deploy 'whatever-*')
 elif [ "${mode}" == 'full' ]; then
     aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
     docker build -t "${NAME}:local" .
@@ -25,12 +25,12 @@ elif [ "${mode}" == 'full' ]; then
     docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest"
     docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:${NOW}"
     echo -n "${NOW}" > what.tag
-    (cd ../ever && cdk diff 'whatever-*')
-    (cd ../ever && cdk deploy 'whatever-*')
+    (cd ../garden && cdk diff 'whatever-*')
+    (cd ../garden && cdk deploy 'whatever-*')
 elif [ "${mode}" == 'diff' ]; then
-    (cd ../ever && cdk diff 'whatever-*')
+    (cd ../garden && cdk diff 'whatever-*')
 elif [ "${mode}" == 'deploy' ]; then
-    (cd ../ever && cdk deploy 'whatever-*')
+    (cd ../garden && cdk deploy 'whatever-*')
 fi
 
 

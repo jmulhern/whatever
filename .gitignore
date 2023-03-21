@@ -3,6 +3,7 @@ dist
 node_modules
 tmp
 .idea
+garden.yaml
 what.tag
 what.yaml
 what.encrypted

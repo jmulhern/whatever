@@ -47,7 +47,7 @@ func (h Handler) SubmitEstimate(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(string(raw))
 	fmt.Println("--- estimate stop ---")
 
-	if h.thing.Bucket.Name != "" && estimate.HasContactInfo() {
+	if h.seed.Bucket.Name != "" && estimate.HasContactInfo() {
 		fmt.Println("--- bucket start ---")
 		now := time.Now()
 
@@ -61,18 +61,18 @@ func (h Handler) SubmitEstimate(w http.ResponseWriter, r *http.Request) {
 			now.Year(), now.Month(), now.Day(), now.Format("150405"), name)
 
 		_, err = s3.NewFromConfig(h.awsConfig).PutObject(r.Context(), &s3.PutObjectInput{
-			Bucket: jsii.String(h.thing.Bucket.Name),
+			Bucket: jsii.String(h.seed.Bucket.Name),
 			Key:    jsii.String(key),
 			Body:   bytes.NewReader(raw),
 		})
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("created s3://%s/%s\n", h.thing.Bucket.Name, key)
+		fmt.Printf("created s3://%s/%s\n", h.seed.Bucket.Name, key)
 		fmt.Println("--- bucket stop ---")
 	}
 
-	if h.thing.SMTP.Host != "" && estimate.HasContactInfo() {
+	if h.seed.SMTP.Host != "" && estimate.HasContactInfo() {
 		fmt.Println("--- email start ---")
 		raw, _ := yaml.Marshal(estimate)
 		body := fmt.Sprintf(`
@@ -87,8 +87,8 @@ func (h Handler) SubmitEstimate(w http.ResponseWriter, r *http.Request) {
 `, string(raw))
 
 		email := mail.NewMSG()
-		email.SetFrom(h.thing.Email.From)
-		email.AddTo(h.thing.Email.To...)
+		email.SetFrom(h.seed.Email.From)
+		email.AddTo(h.seed.Email.To...)
 		email.SetSubject(fmt.Sprintf("Estimate Request - %s %s", estimate.FirstName, estimate.LastName))
 		email.SetBody(mail.TextHTML, body)
 

@@ -8,18 +8,18 @@ import (
 	"fmt"
 	"os"
 
-	what "github.com/jmulhern/what/pkg"
+	seed "github.com/jmulhern/seed/pkg"
 	"gopkg.in/yaml.v3"
 )
 
-func GetWhat() (what what.What) {
-	if raw, err := os.ReadFile("what.yaml"); err == nil {
-		if err := yaml.Unmarshal(raw, &what); err == nil {
-			fmt.Println("using what.yaml")
-			return what
+func OpenPacket() (packet seed.Packet) {
+	if raw, err := os.ReadFile("garden.yaml"); err == nil {
+		if err := yaml.Unmarshal(raw, &packet); err == nil {
+			fmt.Println("using garden.yaml")
+			return packet
 		}
 	}
-	panic("no props loaded")
+	panic("no packet loaded")
 }
 
 func PeekAt(a any) {
