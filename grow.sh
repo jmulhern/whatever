@@ -17,6 +17,7 @@ if [ "${mode}" == 'quick' ]; then
     docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:${NOW}"
     echo -n "${NOW}" > sprout.txt
     (cd ../garden && cdk deploy 'whatever-*')
+
 elif [ "${mode}" == 'full' ]; then
     aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
     docker build -t "${NAME}:local" .
@@ -27,10 +28,32 @@ elif [ "${mode}" == 'full' ]; then
     echo -n "${NOW}" > sprout.txt
     (cd ../garden && cdk diff 'whatever-*')
     (cd ../garden && cdk deploy 'whatever-*')
+
+elif [ "${mode}" == 'build' ]; then
+    aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+    docker build -t "${NAME}:local" .
+    docker tag "${NAME}:local" "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest"
+    docker tag "${NAME}:local" "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:${NOW}"
+
+elif [ "${mode}" == 'push' ]; then
+    aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+    docker build -t "${NAME}:local" .
+    docker tag "${NAME}:local" "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest"
+    docker tag "${NAME}:local" "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:${NOW}"
+    docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest"
+    docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:${NOW}"
+    echo -n "${NOW}" > sprout.txt
+
 elif [ "${mode}" == 'diff' ]; then
     (cd ../garden && cdk diff 'whatever-*')
+
 elif [ "${mode}" == 'deploy' ]; then
     (cd ../garden && cdk deploy 'whatever-*')
+
+elif [ "${mode}" == 'build' ]; then
+    docker build -t "${NAME}:local" .
+    docker tag "${NAME}:local" "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:latest"
+    docker tag "${NAME}:local" "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${NAME}:${NOW}"
 fi
 
 
