@@ -18,7 +18,7 @@ import (
 	"github.com/jmulhern/whatever/pkg/kind"
 )
 
-func (h Handler) SubmitEstimate(w http.ResponseWriter, r *http.Request) {
+func (h Handler) CreateEstimate(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		log.Fatal(err)

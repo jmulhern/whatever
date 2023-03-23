@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
 	heritage "github.com/jmulhern/heritage/pkg"
 	"gopkg.in/yaml.v3"
@@ -19,7 +20,37 @@ func OpenPacket() (packet heritage.Packet) {
 			return packet
 		}
 	}
-	panic("no packet loaded")
+	panic("?")
+}
+
+func OpenLocalPacket(locals ...string) (packet heritage.Packet) {
+	packet = OpenPacket()
+	for _, l := range locals {
+		switch l {
+		case "fqdn":
+			for i, thing := range packet.Seeds {
+				fqdnParts := strings.Split(thing.FQDN, ".")
+				fqdnParts[len(fqdnParts)-1] = "local:3000"
+				thing.FQDN = strings.Join(fqdnParts, ".")
+				packet.Seeds[i] = thing
+			}
+		case "to":
+			for i := range packet.Seeds {
+				if len(packet.Seeds[i].Email.To) > 0 {
+					packet.Seeds[i].Email.To = []string{"jmm@hey.com"}
+				}
+			}
+		case "smtp":
+			for i := range packet.Seeds {
+				packet.Seeds[i].SMTP = heritage.SMTP{}
+			}
+		case "bucket":
+			for i := range packet.Seeds {
+				packet.Seeds[i].Bucket = heritage.Bucket{}
+			}
+		}
+	}
+	return packet
 }
 
 func PeekAt(a any) {

@@ -3,16 +3,12 @@ package whatever
 import (
 	"context"
 	"crypto/tls"
+	"embed"
 	"html/template"
-	"log"
-	"net/http"
-	"os"
-	"strings"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/go-chi/chi/v5"
 	heritage "github.com/jmulhern/heritage/pkg"
 	mail "github.com/xhit/go-simple-mail/v2"
 )
@@ -21,9 +17,10 @@ type Handler struct {
 	seed       heritage.Seed
 	awsConfig  aws.Config
 	smtpServer *mail.SMTPServer
+	index      *template.Template
 }
 
-func NewHandler(seed heritage.Seed) Handler {
+func NewHandler(fs embed.FS, seed heritage.Seed) Handler {
 	var smtpServer *mail.SMTPServer
 	if seed.SMTP.Host != "" {
 		smtpServer = mail.NewSMTPClient()
@@ -38,45 +35,11 @@ func NewHandler(seed heritage.Seed) Handler {
 		smtpServer.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 	}
 	awsConfig, _ := config.LoadDefaultConfig(context.TODO())
+	index := template.Must(template.ParseFS(fs, "templates/*.html"))
 	return Handler{
 		seed:       seed,
 		smtpServer: smtpServer,
 		awsConfig:  awsConfig,
+		index:      index,
 	}
-}
-
-func (h Handler) Index(w http.ResponseWriter, _ *http.Request) {
-	tmpl := template.Must(template.ParseFiles("public/index.html"))
-	err := tmpl.Execute(w, map[string]any{
-		"name": h.seed.Name,
-		"site": h.seed.Site,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-func (Handler) Public(w http.ResponseWriter, r *http.Request) {
-	rctx := chi.RouteContext(r.Context())
-	pathPrefix := strings.TrimSuffix(rctx.RoutePattern(), "/*")
-	fs := http.StripPrefix(pathPrefix, http.FileServer(http.Dir("public")))
-	fs.ServeHTTP(w, r)
-}
-
-func (Handler) BundleJS(w http.ResponseWriter, _ *http.Request) {
-	w.Header().Set("Content-Type", "text/javascript")
-	raw, err := os.ReadFile("dist/bundle.js")
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, _ = w.Write(raw)
-}
-
-func (Handler) BundleCSS(w http.ResponseWriter, _ *http.Request) {
-	w.Header().Set("Content-Type", "text/css")
-	raw, err := os.ReadFile("dist/bundle.css")
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, _ = w.Write(raw)
 }

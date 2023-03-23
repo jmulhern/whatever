@@ -3,13 +3,14 @@ module github.com/jmulhern/whatever
 go 1.20
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.17.6
+	github.com/aws/aws-sdk-go-v2 v1.17.7
 	github.com/aws/aws-sdk-go-v2/config v1.18.16
+	github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.6
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.6
 	github.com/aws/jsii-runtime-go v1.77.0
 	github.com/go-chi/chi/v5 v5.0.8
 	github.com/go-chi/hostrouter v0.2.0
-	github.com/jmulhern/heritage v0.0.6
+	github.com/jmulhern/heritage v0.0.8
 	github.com/xhit/go-simple-mail/v2 v2.13.0
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -19,8 +20,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.16 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.12.24 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.30 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.24 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.31 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.25 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.31 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.22 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect

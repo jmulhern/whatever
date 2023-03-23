@@ -15,8 +15,11 @@ export default function EstimateForm({submitted}) {
   const handleClose = (state) => {
 		setShow(state)
 	}
+  const defaultDate = new Date()
+  //defaultDate.setDate(defaultDate.getDate() + 2 * 7);
 
   const datePickerOptions = {
+    defaultDate: defaultDate,
     autoHide: true,
     todayBtn: false,
     clearBtn: false,
@@ -148,9 +151,13 @@ export default function EstimateForm({submitted}) {
                 id="needed-by"
                 autoComplete="off"
                 className="block w-full rounded-md border-0 py-2 px-3.5 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-200 sm:text-sm sm:leading-6"
+                aria-describedby="needed-by-description"
                 value={neededBy}
               />
             </div>
+            <p className="mt-2 text-sm text-gray-500" id="needed-by-description">
+              Minimum of two weeks notice
+            </p>
           </div>
 
           <div className="sm:col-span-2">

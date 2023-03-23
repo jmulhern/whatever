@@ -7,7 +7,7 @@ export default function Index() {
             <div className="p-12">
               <h1>The Bachelorette Fantasy League</h1>
               Coming soon..
-              <img src="/public/cool-guy.jpeg" alt="Cool guy!"></img>
+              <img src="/public/cool-guy.webp" alt="Cool guy!"></img>
             </div>
           </div>
         </div>

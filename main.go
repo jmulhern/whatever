@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"log"
 	"net/http"
@@ -14,6 +15,11 @@ import (
 	heritage "github.com/jmulhern/heritage/pkg"
 
 	"github.com/jmulhern/whatever/pkg"
+)
+
+var (
+	//go:embed templates
+	templates embed.FS
 )
 
 func main() {
@@ -44,35 +50,12 @@ func main() {
 	case "decrypt":
 		fmt.Println(whatever.Decrypt(os.Args[2]))
 	case "serve":
-		packet := whatever.OpenPacket()
-		if local := flags["local"]; local != "" {
-			for _, l := range strings.Split(local, ",") {
-				switch l {
-				case "fqdn":
-					for i, thing := range packet.Seeds {
-						fqdnParts := strings.Split(thing.FQDN, ".")
-						fqdnParts[len(fqdnParts)-1] = "local:3000"
-						thing.FQDN = strings.Join(fqdnParts, ".")
-						packet.Seeds[i] = thing
-					}
-				case "to":
-					for i := range packet.Seeds {
-						if len(packet.Seeds[i].Email.To) > 0 {
-							packet.Seeds[i].Email.To = []string{"jmm@hey.com"}
-						}
-					}
-				case "smtp":
-					for i := range packet.Seeds {
-						packet.Seeds[i].SMTP = heritage.SMTP{}
-					}
-				case "bucket":
-					for i := range packet.Seeds {
-						packet.Seeds[i].Bucket = heritage.Bucket{}
-					}
-				}
-			}
+		var packet heritage.Packet
+		if local := flags["local"]; local == "" {
+			packet = whatever.OpenPacket()
+		} else {
+			packet = whatever.OpenLocalPacket(strings.Split(local, ",")...)
 		}
-
 		if _, found := flags["peek"]; found {
 			whatever.PeekAt(packet)
 		}
@@ -80,6 +63,7 @@ func main() {
 		r.Use(middleware.RequestID)
 		r.Use(middleware.Logger)
 		r.Use(middleware.Recoverer)
+		r.Use(middleware.Compress(5))
 		r.Use(middleware.Timeout(60 * time.Second))
 
 		hr := hostrouter.New()
@@ -87,31 +71,32 @@ func main() {
 		for _, seed := range packet.Seeds {
 			switch seed.Name {
 			case "whatever":
-				h := whatever.NewHandler(seed)
+				h := whatever.NewHandler(templates, seed)
 				router := chi.NewRouter()
-				router.Get("/dist/bundle.js", h.BundleJS)
-				router.Get("/dist/bundle.css", h.BundleCSS)
-				router.Get("/public/*", h.Public)
-				router.Get("/*", h.Index)
+				router.Get("/x/costs", h.GetCosts)
+				router.Get("/dist/bundle.js", h.GetBundleJS)
+				router.Get("/dist/bundle.css", h.GetBundleCSS)
+				router.Get("/public/*", h.GetPublic)
+				router.Get("/*", h.GetIndex)
 				hr.Map(seed.FQDN, router)
 
 			case "desert-cat-cookies":
-				h := whatever.NewHandler(seed)
+				h := whatever.NewHandler(templates, seed)
 				router := chi.NewRouter()
-				router.Get("/dist/bundle.js", h.BundleJS)
-				router.Get("/dist/bundle.css", h.BundleCSS)
-				router.Get("/public/*", h.Public)
-				router.Post("/x/estimates", h.SubmitEstimate)
-				router.Get("/*", h.Index)
+				router.Get("/dist/bundle.js", h.GetBundleJS)
+				router.Get("/dist/bundle.css", h.GetBundleCSS)
+				router.Get("/public/*", h.GetPublic)
+				router.Post("/x/estimates", h.CreateEstimate)
+				router.Get("/*", h.GetIndex)
 				hr.Map(seed.FQDN, router)
 
 			case "greasy-shadows", "the-bachelorette":
-				h := whatever.NewHandler(seed)
+				h := whatever.NewHandler(templates, seed)
 				router := chi.NewRouter()
-				router.Get("/dist/bundle.js", h.BundleJS)
-				router.Get("/dist/bundle.css", h.BundleCSS)
-				router.Get("/public/*", h.Public)
-				router.Get("/*", h.Index)
+				router.Get("/dist/bundle.js", h.GetBundleJS)
+				router.Get("/dist/bundle.css", h.GetBundleCSS)
+				router.Get("/public/*", h.GetPublic)
+				router.Get("/*", h.GetIndex)
 				hr.Map(seed.FQDN, router)
 			}
 		}

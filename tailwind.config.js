@@ -2,8 +2,8 @@
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
-    "./props*.yaml",
-    "./public/*.html}",
+    "./garden.yaml",
+    "./templates/*.html}",
     "./node_modules/tailwind-datepicker-react/dist/**/*.js",
   ],
   theme: {
