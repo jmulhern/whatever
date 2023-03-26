@@ -1,8 +1,11 @@
 import {useState} from "react";
 import Datepicker from "tailwind-datepicker-react"
 
+const enableButtonClasses = "block w-full rounded-md bg-pink-400 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-200"
+const disabledButtonClasses = "block w-full rounded-md bg-pink-400 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus:outline-none disabled:opacity-25"
+const earliestOrder = new Date(2023,4,1)
 export default function EstimateForm({submitted}) {
-  const [neededBy, setNeededBy] = useState("");
+  const [neededBy, setNeededBy] = useState(new Date());
   const [quantity, setQuantity] = useState(0);
   const [show, setShow] = useState(false);
 
@@ -15,11 +18,10 @@ export default function EstimateForm({submitted}) {
   const handleClose = (state) => {
 		setShow(state)
 	}
-  const defaultDate = new Date()
   //defaultDate.setDate(defaultDate.getDate() + 2 * 7);
 
   const datePickerOptions = {
-    defaultDate: defaultDate,
+    defaultDate: neededBy,
     autoHide: true,
     todayBtn: false,
     clearBtn: false,
@@ -39,6 +41,14 @@ export default function EstimateForm({submitted}) {
       )
   }
 
+  let acceptableNeededBy = neededBy > earliestOrder
+  let buttonClass = disabledButtonClasses
+  if(acceptableNeededBy) {
+    buttonClass = enableButtonClasses
+  }
+  console.log("neededBy", neededBy)
+  console.log("earliestOrder", earliestOrder)
+  console.log(neededBy > earliestOrder)
   return (
     <div className="isolate bg-white py-24 px-6 sm:py-32 lg:px-8">
       <div className="mx-auto max-w-2xl text-center">
@@ -156,7 +166,7 @@ export default function EstimateForm({submitted}) {
               />
             </div>
             <p className="mt-2 text-sm text-gray-500" id="needed-by-description">
-              Minimum of two weeks notice
+              Next availability is May 1st
             </p>
           </div>
 
@@ -179,7 +189,8 @@ export default function EstimateForm({submitted}) {
         <div className="mt-10">
           <button
             type="submit"
-            className="block w-full rounded-md bg-pink-400 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-200"
+            disabled={!acceptableNeededBy}
+            className={buttonClass}
           >
             Submit
           </button>

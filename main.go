@@ -77,6 +77,7 @@ func main() {
 				router.Get("/dist/bundle.js", h.GetBundleJS)
 				router.Get("/dist/bundle.css", h.GetBundleCSS)
 				router.Get("/public/*", h.GetPublic)
+				router.Post("/report/csp", h.ReceiveContentSecurityPolicyReport)
 				router.Get("/*", h.GetIndex)
 				hr.Map(seed.FQDN, router)
 
@@ -87,6 +88,7 @@ func main() {
 				router.Get("/dist/bundle.css", h.GetBundleCSS)
 				router.Get("/public/*", h.GetPublic)
 				router.Post("/x/estimates", h.CreateEstimate)
+				router.Post("/report/csp", h.ReceiveContentSecurityPolicyReport)
 				router.Get("/*", h.GetIndex)
 				hr.Map(seed.FQDN, router)
 
@@ -96,6 +98,7 @@ func main() {
 				router.Get("/dist/bundle.js", h.GetBundleJS)
 				router.Get("/dist/bundle.css", h.GetBundleCSS)
 				router.Get("/public/*", h.GetPublic)
+				router.Post("/report/csp", h.ReceiveContentSecurityPolicyReport)
 				router.Get("/*", h.GetIndex)
 				hr.Map(seed.FQDN, router)
 			}
