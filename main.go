@@ -73,7 +73,7 @@ func main() {
 			case "whatever":
 				h := whatever.NewHandler(templates, seed)
 				router := chi.NewRouter()
-				router.Get("/x/costs", h.GetCosts)
+				router.Get("/x/things", h.GetThings)
 				router.Get("/dist/bundle.js", h.GetBundleJS)
 				router.Get("/dist/bundle.css", h.GetBundleCSS)
 				router.Get("/public/*", h.GetPublic)
