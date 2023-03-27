@@ -1,16 +1,3 @@
-FROM node:18-alpine AS js-builder
-
-WORKDIR /x
-
-COPY package.json .
-COPY package-lock.json .
-
-RUN npm install
-
-COPY . .
-
-RUN npm run build
-
 FROM golang:1.20-bullseye AS bin-builder
 
 WORKDIR /x

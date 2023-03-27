@@ -10,16 +10,17 @@ export default function App() {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const params = Object.fromEntries(urlSearchParams.entries());
   const parts = window.location.pathname.split("/");
+  const cdn = window.cdn
 
   let site = <h1>???</h1>
   if (window.seed === 'whatever') {
-    site = <Whatever params={params} parts={parts} />
+    site = <Whatever cdn={cdn} params={params} parts={parts} />
   } else if (window.seed === 'greasy-shadows') {
-    site = <GreasyShadows params={params} parts={parts} />
+    site = <GreasyShadows cdn={cdn} params={params} parts={parts} />
   } else if (window.seed  === 'the-bachelorette') {
-    site = <TheBachelorette params={params} parts={parts} />
+    site = <TheBachelorette cdn={cdn} params={params} parts={parts} />
   } else if (window.seed === 'desert-cat-cookies') {
-    site = <DesertCatCookies params={params} parts={parts} />
+    site = <DesertCatCookies cdn={cdn} params={params} parts={parts} />
   }
   return (
     <QueryClientProvider client={queryClient}>

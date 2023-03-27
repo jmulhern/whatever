@@ -20,6 +20,7 @@ func (h Handler) GetIndex(w http.ResponseWriter, _ *http.Request) {
 		"name":  h.seed.Name,
 		"site":  h.seed.Site,
 		"nonce": nonce,
+		"cdn": h.seed.CDN.Use,
 	})
 	if err != nil {
 		log.Fatal(err)

@@ -5,15 +5,16 @@
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <meta name="description" content="{{ .site.Description }}">
     <title>{{ .site.Title }}</title>
-    <link rel="icon" type="image/x-icon" href="{{ .site.Favicon }}">
-    <link rel="stylesheet" type="text/css" href="/dist/bundle.css">
+    <link rel="icon" type="image/x-icon" href="{{ .cdn }}/{{ .site.Favicon }}">
+    <link rel="stylesheet" type="text/css" href="{{ .cdn }}/dist/bundle.css">
 </head>
 <body class='{{ .site.BodyClasses }}'>
 <div id="root"></div>
 <noscript>
     This page requires JavaScript!
 </noscript>
-<script nonce="{{ .nonce }}">window.seed = '{{ .name }}';</script>
-<script nonce="{{ .nonce }}" src="/dist/bundle.js"></script>
+<script>window.seed = '{{ .name }}';</script>
+<script>window.cdn = '{{ .cdn }}';</script>
+<script src="{{ .cdn }}/dist/bundle.js"></script>
 </body>
 </html>

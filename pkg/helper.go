@@ -48,6 +48,10 @@ func OpenLocalPacket(locals ...string) (packet heritage.Packet) {
 			for i := range packet.Seeds {
 				packet.Seeds[i].Bucket = heritage.Bucket{}
 			}
+		case "cdn":
+			for i := range packet.Seeds {
+				packet.Seeds[i].CDN = heritage.CDN{}
+			}
 		}
 	}
 	return packet
