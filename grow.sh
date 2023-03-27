@@ -21,7 +21,7 @@ if [ "${mode}" == 'quick' ]; then
     npm run build
     aws s3 sync --delete dist "s3://${BUCKET}/dist"
     aws s3 sync --delete public "s3://${BUCKET}/public"
-    aws cloudfront create-invalidation --distribution-id="${CLOUDFRONT_DISTRIBUTION_ID}" --paths='/public*' > /dev/null
+    aws cloudfront create-invalidation --distribution-id="${CLOUDFRONT_DISTRIBUTION_ID}" --paths='/*' > /dev/null
     (cd ../garden && cdk deploy 'whatever-*')
 
 elif [ "${mode}" == 'full' ]; then
@@ -35,7 +35,7 @@ elif [ "${mode}" == 'full' ]; then
     npm run build
     aws s3 sync --delete dist "s3://${BUCKET}/dist"
     aws s3 sync --delete public "s3://${BUCKET}/public"
-    aws cloudfront create-invalidation --distribution-id="${CLOUDFRONT_DISTRIBUTION_ID}" --paths='/public*' > /dev/null
+    aws cloudfront create-invalidation --distribution-id="${CLOUDFRONT_DISTRIBUTION_ID}" --paths='/*' > /dev/null
     (cd ../garden && cdk diff 'whatever-*')
     (cd ../garden && cdk deploy 'whatever-*')
 
@@ -74,7 +74,7 @@ elif [ "${mode}" == 'frontend' ]; then
     npm run build
     aws s3 sync --delete dist "s3://${BUCKET}/dist"
     aws s3 sync --delete public "s3://${BUCKET}/public"
-    aws cloudfront create-invalidation --distribution-id="${CLOUDFRONT_DISTRIBUTION_ID}" --paths='/public*' > /dev/null
+    aws cloudfront create-invalidation --distribution-id="${CLOUDFRONT_DISTRIBUTION_ID}" --paths='/*' > /dev/null
 
 elif [ "${mode}" == 'build' ]; then
     docker build -t "${NAME}:local" .

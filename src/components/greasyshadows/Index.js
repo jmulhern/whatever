@@ -8,7 +8,7 @@ export default function Index() {
           <div className="flex flex-col justify-center items-center">
 
             <div className="p-8 text-white font-bold justify-center text-3xl">
-              <h1>Spiritual Warfare and the Greasy Shadows!</h1>
+              <h1>Spiritual Warfare and the Greasy Shadows.</h1>
             </div>
 
             <div className="py-4">
