@@ -88,17 +88,33 @@ func main() {
 				router.Get("/dist/bundle.css", h.GetBundleCSS)
 				router.Get("/public/*", h.GetPublic)
 				router.Post("/x/estimates", h.CreateEstimate)
-				router.Post("/report/csp", h.ReceiveContentSecurityPolicyReport)
 				router.Get("/*", h.GetIndex)
 				hr.Map(seed.FQDN, router)
 
-			case "greasy-shadows", "the-bachelorette":
+			case "greasy-shadows":
 				h := whatever.NewHandler(templates, seed)
 				router := chi.NewRouter()
 				router.Get("/dist/bundle.js", h.GetBundleJS)
 				router.Get("/dist/bundle.css", h.GetBundleCSS)
 				router.Get("/public/*", h.GetPublic)
-				router.Post("/report/csp", h.ReceiveContentSecurityPolicyReport)
+				router.Get("/*", h.GetIndex)
+				hr.Map(seed.FQDN, router)
+
+			case "the-bachelorette":
+				h := whatever.NewHandler(templates, seed)
+				router := chi.NewRouter()
+				router.Get("/dist/bundle.js", h.GetBundleJS)
+				router.Get("/dist/bundle.css", h.GetBundleCSS)
+				router.Get("/public/*", h.GetPublic)
+				router.Get("/*", h.GetIndex)
+				hr.Map(seed.FQDN, router)
+
+			case "hall-of-fame":
+				h := whatever.NewHandler(templates, seed)
+				router := chi.NewRouter()
+				router.Get("/dist/bundle.js", h.GetBundleJS)
+				router.Get("/dist/bundle.css", h.GetBundleCSS)
+				router.Get("/public/*", h.GetPublic)
 				router.Get("/*", h.GetIndex)
 				hr.Map(seed.FQDN, router)
 			}

@@ -30,7 +30,7 @@ func OpenLocalPacket(locals ...string) (packet heritage.Packet) {
 		case "fqdn":
 			for i, thing := range packet.Seeds {
 				fqdnParts := strings.Split(thing.FQDN, ".")
-				fqdnParts[len(fqdnParts)-1] = "local:3000"
+				fqdnParts[len(fqdnParts)-1] = "x:3000"
 				thing.FQDN = strings.Join(fqdnParts, ".")
 				packet.Seeds[i] = thing
 			}
@@ -47,6 +47,10 @@ func OpenLocalPacket(locals ...string) (packet heritage.Packet) {
 		case "bucket":
 			for i := range packet.Seeds {
 				packet.Seeds[i].Bucket = heritage.Bucket{}
+			}
+		case "csp":
+			for i := range packet.Seeds {
+				packet.Seeds[i].ContentSecurityPolicy = heritage.ContentSecurityPolicy{}
 			}
 		case "cdn":
 			for i := range packet.Seeds {
