@@ -35,7 +35,7 @@ func NewHandler(fs embed.FS, seed heritage.Seed) Handler {
 		smtpServer.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 	}
 	awsConfig, _ := config.LoadDefaultConfig(context.TODO())
-	index := template.Must(template.ParseFS(fs, "templates/*.html"))
+	index := template.Must(template.ParseFS(fs, "templates/index.html"))
 	return Handler{
 		seed:       seed,
 		smtpServer: smtpServer,

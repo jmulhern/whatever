@@ -70,52 +70,96 @@ func main() {
 
 		for _, seed := range packet.Seeds {
 			switch seed.Name {
+			// Live
 			case "whatever":
 				h := whatever.NewHandler(templates, seed)
 				router := chi.NewRouter()
+				// backend
 				router.Get("/x/things", h.GetThings)
+				// frontend
 				router.Get("/dist/bundle.js", h.GetBundleJS)
 				router.Get("/dist/bundle.css", h.GetBundleCSS)
 				router.Get("/public/*", h.GetPublic)
+				router.Get("/", h.GetIndex)
+				// support
 				router.Post("/report/csp", h.ReceiveContentSecurityPolicyReport)
-				router.Get("/*", h.GetIndex)
+				router.Post("/health", h.GetHealth)
+				// not found
+				router.Get("/*", h.Get404)
 				hr.Map(seed.FQDN, router)
 
 			case "desert-cat-cookies":
 				h := whatever.NewHandler(templates, seed)
 				router := chi.NewRouter()
+				// backend
+				router.Post("/x/estimates", h.CreateEstimate)
+				// frontend
 				router.Get("/dist/bundle.js", h.GetBundleJS)
 				router.Get("/dist/bundle.css", h.GetBundleCSS)
 				router.Get("/public/*", h.GetPublic)
-				router.Post("/x/estimates", h.CreateEstimate)
-				router.Get("/*", h.GetIndex)
+				router.Get("/", h.GetIndex)
+				// support
+				router.Post("/report/csp", h.ReceiveContentSecurityPolicyReport)
+				router.Post("/health", h.GetHealth)
+				// not found
+				router.Get("/*", h.Get404)
 				hr.Map(seed.FQDN, router)
 
 			case "greasy-shadows":
 				h := whatever.NewHandler(templates, seed)
 				router := chi.NewRouter()
+				// frontend
 				router.Get("/dist/bundle.js", h.GetBundleJS)
 				router.Get("/dist/bundle.css", h.GetBundleCSS)
 				router.Get("/public/*", h.GetPublic)
-				router.Get("/*", h.GetIndex)
+				router.Get("/", h.GetIndex)
+				// support
+				router.Post("/report/csp", h.ReceiveContentSecurityPolicyReport)
+				router.Post("/health", h.GetHealth)
+				// not found
+				router.Get("/*", h.Get404)
 				hr.Map(seed.FQDN, router)
 
+			case "watch":
+				h := whatever.NewHandler(templates, seed)
+				router := chi.NewRouter()
+				// backend
+				router.Get("/x/movies", h.GetMovies)
+				// frontend
+				router.Get("/dist/bundle.js", h.GetBundleJS)
+				router.Get("/dist/bundle.css", h.GetBundleCSS)
+				router.Get("/public/*", h.GetPublic)
+				router.Get("/", h.GetIndex)
+				// support
+				router.Post("/report/csp", h.ReceiveContentSecurityPolicyReport)
+				router.Post("/health", h.GetHealth)
+				// default
+				router.Get("/*", h.Get404)
+				hr.Map(seed.FQDN, router)
+
+			// Incubator
 			case "the-bachelorette":
 				h := whatever.NewHandler(templates, seed)
 				router := chi.NewRouter()
+				// frontend
 				router.Get("/dist/bundle.js", h.GetBundleJS)
 				router.Get("/dist/bundle.css", h.GetBundleCSS)
 				router.Get("/public/*", h.GetPublic)
-				router.Get("/*", h.GetIndex)
+				router.Get("/", h.GetIndex)
+				// default
+				router.Get("/*", h.Get404)
 				hr.Map(seed.FQDN, router)
 
 			case "hall-of-fame":
 				h := whatever.NewHandler(templates, seed)
 				router := chi.NewRouter()
+				// frontend
 				router.Get("/dist/bundle.js", h.GetBundleJS)
 				router.Get("/dist/bundle.css", h.GetBundleCSS)
 				router.Get("/public/*", h.GetPublic)
-				router.Get("/*", h.GetIndex)
+				router.Get("/", h.GetIndex)
+				// default
+				router.Get("/*", h.Get404)
 				hr.Map(seed.FQDN, router)
 			}
 		}

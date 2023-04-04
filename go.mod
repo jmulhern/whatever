@@ -9,7 +9,7 @@ require (
 	github.com/aws/jsii-runtime-go v1.77.0
 	github.com/go-chi/chi/v5 v5.0.8
 	github.com/go-chi/hostrouter v0.2.0
-	github.com/jmulhern/heritage v0.2.2
+	github.com/jmulhern/heritage v0.2.3
 	github.com/xhit/go-simple-mail/v2 v2.13.0
 	gopkg.in/yaml.v3 v3.0.1
 )

@@ -15,12 +15,11 @@ func (h Handler) GetIndex(w http.ResponseWriter, _ *http.Request) {
 			w.Header().Set("Content-Security-Policy", csp.Make(nonce))
 		}
 	}
-
 	err := h.index.Execute(w, map[string]any{
 		"name":  h.seed.Name,
 		"site":  h.seed.Site,
 		"nonce": nonce,
-		"cdn": h.seed.CDN.Use,
+		"cdn":   h.seed.CDN.Use,
 	})
 	if err != nil {
 		log.Fatal(err)

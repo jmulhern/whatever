@@ -3,6 +3,7 @@ import { default as DesertCatCookies } from "./desertcatcookies/Index";
 import { default as GreasyShadows } from "./greasyshadows/Index";
 import { default as TheBachelorette } from "./thebachelorette/Index";
 import { default as HallOfFame } from "./hof/Index";
+import { default as MarvelMovies } from "./watch/Index";
 
 
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -26,6 +27,8 @@ export default function App() {
     site = <TheBachelorette cdn={cdn} params={params} parts={parts} />
   } else if (window.seed === 'hall-of-fame') {
     site = <HallOfFame cdn={cdn} params={params} parts={parts} />
+  } else if (window.seed === 'watch') {
+    site = <MarvelMovies cdn={cdn} params={params} parts={parts} />
   }
   return (
     <QueryClientProvider client={queryClient}>
