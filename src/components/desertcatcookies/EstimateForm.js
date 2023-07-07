@@ -166,7 +166,7 @@ export default function EstimateForm({submitted}) {
               />
             </div>
             <p className="mt-2 text-sm text-gray-500" id="needed-by-description">
-              Next availability is May 1st
+              Minimum of two weeks notice
             </p>
           </div>
 
